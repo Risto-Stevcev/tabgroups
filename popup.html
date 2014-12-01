@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="popup.css"/>
+    <script type="application/javascript" src="popup.js"></script>
+  </head>
+  <body>
+
+  <div id="container">
+    <div class="section">
+      <div class="title right">
+        <select id="menu" class="floatleft">
+          <option>Default</option>
+        </select>
+
+        <img src="loadicon.svg" class="floatleft" title="Load group" />
+        <img id="removegroup" src="removeicon.svg" class="floatleft" title="Remove group" />
+        <img id="addgroup" src="addicon.svg" class="floatleft" title="Add new group" />
+        <img id="trash" src="trashicon.svg" title="Trash can (for tabs)" />
+      </div>
+
+      <ul></ul>
+      <div id="droparea">Drop here</div>
+    </div>
+    <div class="section">
+      <div class="title right"> <strong style="float: left;">Base</strong>
+        <a id="baselink" href="#">Set as base</a>
+      </div>
+      <ul id="baselist">
+      </ul>
+    </div>
+  </div>
+
+  </body>
+</html>

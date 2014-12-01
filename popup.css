@@ -1,0 +1,99 @@
+#container {
+    width: 39.5em;
+    padding: 0.5em;
+    overflow: auto;
+}
+
+#container div:first-child {
+    margin-right: 0.3em;
+}
+
+#droparea {
+    margin: 0.1em auto 0.1em auto;
+    border: 0.15em dashed black;
+    border-radius: 1em;
+    text-align: center;
+    background-color: aliceblue;
+    color: midnightblue;
+}
+
+div.title {
+    margin-bottom: 0.5em;
+}
+
+div.section {
+    background-color: lightblue;
+    border: 0.2em solid black;
+    border-radius: 1em;
+    padding: 0.5em;
+    width: 18.0em;
+    max-height: 30em;
+    float: left;
+    overflow-y: scroll;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 0 auto;
+}
+
+li.span {
+    background-color: aliceblue;
+    border: 0.15em solid black;
+    border-radius: 1em;
+    padding: 0 1em 0 1em;
+    margin: 0.1em auto 0.1em auto;
+}
+
+li.grab {
+    cursor: -webkit-grab;
+}
+
+span:hover {
+    background-color: rgb(183, 226, 240);
+}
+
+a {
+    text-decoration: none;
+    color: midnightblue;
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+select {
+    background: white;
+    border-radius: 1em;
+    border: 0.15em solid black;
+    font-weight: bold;
+}
+
+.icon {
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+}
+
+
+/* Globals */
+.floatleft { float: left; }
+.right { text-align: right; }
+.bold  { font-weight: bold; }
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 0.75em;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 4px rgba(20, 50, 50, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 4px rgba(20, 50, 50, 0.5);
+}
