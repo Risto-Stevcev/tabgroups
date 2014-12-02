@@ -38,16 +38,14 @@ ul {
     margin: 0 auto 0 auto;
 }
 
-li.span {
+li.tab {
     background-color: aliceblue;
     border: 0.15em solid black;
     border-radius: 1em;
     padding: 0 1em 0 1em;
     margin: 0.1em auto 0.1em auto;
-}
-
-li.grab {
     cursor: -webkit-grab;
+    word-wrap: break-word;
 }
 
 span:hover {

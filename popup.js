@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     //  throw new TypeError('Function expects a TabItem object');
     var tabElem = document.createElement('li');
     tabElem.setAttribute('id', tabItem.id);
-    tabElem.setAttribute('class', 'span grab');
+    tabElem.setAttribute('class', 'tab');
     tabElem.setAttribute('draggable', 'true');
     tabElem.addEventListener('dragstart', getId);
     tabElem.innerHTML = "<img src='" + tabItem.iconUrl + "' class='icon'/>" + 
@@ -102,10 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function addBaseElements() {
     var baseList = document.getElementById('baselist');
-
-    /* Remove tab elements */
-    while (baseList.hasChildNodes())
-      baseList.removeChild(baseList.lastChild);
+    baseList.innerHTML = '';  // Remove tab elements
 
     /* Add tab elements if baseList window is set and exists */
     chrome.storage.sync.get('baseList', function(item) {
@@ -123,9 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
           }); 
         }
-        catch (e) {
-          chrome.storage.sync.clear();  // clear invalid baseList window id
-        }
+        catch (e) { chrome.storage.sync.clear(); }
       }
     });
   }
@@ -198,49 +193,31 @@ document.addEventListener('DOMContentLoaded', function() {
   dropArea.addEventListener('dragover', allowDrop, false);
   dropArea.addEventListener('drop', addTab, false);
 
-  var trash = document.getElementById('trash'); 
-  trash.addEventListener('dragover', allowDrop, false);
-  trash.addEventListener('drop', removeTab, false);
-
-
-  /* Link listeners  */
-  var onAddBaseList = document.createEvent('Event');
-  onAddBaseList.initEvent('addBaseList', true, true);
-
-  var onAddGroup = document.createEvent('Event');
-  onAddGroup.initEvent('addGroup', true, true);
-
-  var onRemoveGroup = document.createEvent('Event');
-  onRemoveGroup.initEvent('removeGroup', true, true);
-
-
-  document.addEventListener('addBaseList', function(event) {
+  var baseLink = document.getElementById('baselink');
+  baseLink.addEventListener('click', function(event) {
     chrome.windows.getCurrent(function(_window_) {
       chrome.storage.sync.set({'baseList': _window_.id}, function() {
         addBaseElements();
       });
     });
-  });
-
-  document.addEventListener('addGroup', function(event) {
-  });
-
-  document.addEventListener('removeGroup', function(event) {
-  });
-
-
-  document.getElementById('baselink').addEventListener('click', function(event) {
-    document.dispatchEvent(onAddBaseList);
     disableBaseLink();
   });
 
-  document.getElementById('addgroup').addEventListener('click', function(event) {
-    document.dispatchEvent(onAddGroup);
+  var loadIcon = document.getElementById('loadgroup');
+  loadIcon.addEventListener('click', function(event) {
   });
 
-  document.getElementById('removegroup').addEventListener('click', function(event) {
-    document.dispatchEvent(onRemoveGroup);
+  var removeIcon = document.getElementById('removegroup');
+  removeIcon.addEventListener('click', function(event) {
   });
+
+  var addIcon = document.getElementById('addgroup');
+  addIcon.addEventListener('click', function(event) {
+  });
+
+  var trashIcon = document.getElementById('trash'); 
+  trashIcon.addEventListener('dragover', allowDrop, false);
+  trashIcon.addEventListener('drop', removeTab, false);
 
 
   /* * * * * * * *
