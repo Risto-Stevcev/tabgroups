@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
    * * * * * * */
 
   function tabElement(tabItem) {
-    //if (!(tabItem instanceof TabItem))
-    //  throw new TypeError('Function expects a TabItem object');
     var tabElem = document.createElement('li');
     tabElem.setAttribute('id', tabItem.id);
     tabElem.setAttribute('class', 'tab');
@@ -102,9 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function addBaseElements() {
     var baseList = document.getElementById('baselist');
-    baseList.innerHTML = '';  // Remove tab elements
+    while (baseList.hasChildNodes())
+      baseList.removeChild(baseList.lastChild);
 
-    /* Add tab elements if baseList window is set and exists */
     chrome.storage.sync.get('baseList', function(item) {
       if (item.baseList) {
         try {
@@ -173,18 +171,26 @@ document.addEventListener('DOMContentLoaded', function() {
    * * * * * * */
 
   /* Menu listener */
-  document.getElementById('menu').addEventListener('change', function() {
+  var menu = document.getElementById('menu');
+  menu.addEventListener('change', function(event) {
+    console.log('change', event.target.selectedOptions[0].innerHTML);
     var group = event.target.selectedOptions[0].innerHTML;
 
     chrome.storage.sync.get(group, function(item) {
+      console.log('item[group]:', item[group]);
       if (item[group])
         addGroupTabs(group);
       else {
         var item = {};
         item[group] = {};
         chrome.storage.sync.set(item);
+        document.getElementById('tablist').innerHTML = '';
       }
     });
+  });
+
+  chrome.storage.onChanged.addListener(function(changes) {
+    console.log('changes', changes);
   });
 
 
@@ -209,11 +215,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var removeIcon = document.getElementById('removegroup');
   removeIcon.addEventListener('click', function(event) {
+    var menu = document.getElementById('menu');
+    var groupName = menu.selectedOptions[0].innerText;
+    if (groupName === 'Default') 
+      return;
+    var confirmRemove = confirm('Remove group ' + groupName + '?');
+
+    if (confirmRemove) {
+      var defaultIndex;
+      Array.prototype.forEach.call(menu.children, function(group, index) {
+        if (group.innerHTML === 'Default')
+          defaultIndex = index;
+        else if (group.innerHTML === groupName)
+          menu.removeChild(group);
+      });
+
+      chrome.storage.sync.remove(groupName, function() {
+        if (defaultIndex !== undefined) {
+          menu.selectedIndex = defaultIndex;
+          menu.dispatchEvent(new Event('change'));
+        }
+      });
+    }
   });
 
   var addIcon = document.getElementById('addgroup');
   addIcon.addEventListener('click', function(event) {
+    var groupName = prompt('Enter group name:');
+
+    if (groupName) {
+      var menu = document.getElementById('menu');
+      var newGroup = document.createElement('option');
+      newGroup.innerHTML = groupName;
+      menu.appendChild(newGroup);
+
+      menu.selectedIndex = menu.children.length - 1;
+      menu.dispatchEvent(new Event('change'));
+    }
   });
+
+
+
 
   var trashIcon = document.getElementById('trash'); 
   trashIcon.addEventListener('dragover', allowDrop, false);
@@ -231,6 +273,17 @@ document.addEventListener('DOMContentLoaded', function() {
           disableBaseLink();
       });
     }
+  });
+
+  chrome.storage.sync.get(null, function(items) {
+    var menu = document.getElementById('menu');
+    Object.keys(items).forEach(function(groupName) {
+      if (groupName !== 'baseList' && groupName !== 'Default') {
+        var groupElem = document.createElement('option');
+        groupElem.innerHTML = groupName;
+        menu.appendChild(groupElem);
+      }
+    });
   });
 
   addGroupTabs('Default');
