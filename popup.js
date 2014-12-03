@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         typeof url     !== 'string' ||
         typeof iconUrl !== 'string')
      throw new TypeError('TabItem expects a signature of ' + 
-                         '(Number id, String title, String iconUrl)');
+                         '(String id, String title, String url, String iconUrl)');
    this.id = id;
    this.title = title;
    this.url = url;
