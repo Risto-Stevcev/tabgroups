@@ -28,6 +28,21 @@ document.addEventListener('DOMContentLoaded', function() {
     tabElem.setAttribute('draggable', 'true');
     tabElem.setAttribute('title', tabItem.url);
     tabElem.addEventListener('dragstart', getId);
+
+    if (tabItem.id.slice(0,4) !== 'base') {
+      tabElem.addEventListener('dragover', allowDrop, false);
+      tabElem.addEventListener('drop', function(event) {
+        event.preventDefault();
+        var transferItem = JSON.parse(event.dataTransfer.getData('text/plain'));
+        var dragNode = event.target.parentNode.childNodes[transferItem.index];
+        var dropNode = event.target;
+        
+        if (dragNode && dropNode) {
+          dropNode.parentNode.insertBefore(dragNode, dropNode.nextSibling);
+        }
+      }, false);
+    }
+
     tabElem.innerHTML = "<img src='" + tabItem.iconUrl + "' class='icon'/>" + 
                         tabItem.title;
     return tabElem;

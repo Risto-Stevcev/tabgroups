@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Tab Groups",
-    "description": "A variation of the Firefox Tab Group feature for Chrome/Chromium.",
+    "description": "A variation of the firefox tab group feature for chrome.",
     "version": "0.1",
 
     "browser_action": {
